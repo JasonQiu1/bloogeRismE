@@ -1,0 +1,7 @@
+*.sock
+venv/
+media/
+BlogSite/settings.py
+__pycache__
+static/
+*.*~

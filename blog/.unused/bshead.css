@@ -1,0 +1,52 @@
+/*!
+ * Bootswatch v5.0.1
+ * Homepage: https://bootswatch.com
+ * Copyright 2012-2021 Thomas Park
+ * Licensed under MIT
+ * Based on Bootstrap
+*/
+/*!
+ * Bootstrap v5.0.1 (https://getbootstrap.com/)
+ * Copyright 2011-2021 The Bootstrap Authors
+ * Copyright 2011-2021 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+@import url("https://fonts.googleapis.com/css2?family=News+Cycle:wght@400;700&display=swap");
+:root {
+  --bs-blue: #eb6864;
+  --bs-indigo: #6610f2;
+  --bs-purple: #6f42c1;
+  --bs-pink: #e83e8c;
+  --bs-red: #f57a00;
+  --bs-orange: #fd7e14;
+  --bs-yellow: #f5e625;
+  --bs-green: #22b24c;
+  --bs-teal: #20c997;
+  --bs-cyan: #369;
+  --bs-white: #fff;
+  --bs-gray: #777;
+  --bs-gray-dark: #333;
+  --bs-primary: #eb6864;
+  --bs-secondary: #aaa;
+  --bs-success: #22b24c;
+  --bs-info: #369;
+  --bs-warning: #f5e625;
+  --bs-danger: #f57a00;
+  --bs-light: #f8f9fa;
+  --bs-dark: #222;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    scroll-behavior: smooth;
+  }
+}

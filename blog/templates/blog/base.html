@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+  <link rel="icon" href="{% static 'blog/images/favicon.ico' %}">
+  <meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes”>
+  <link rel='stylesheet' type='text/css' href='{% static 'blog/main.css' %}'>
+</head>
+<body>
+  <!-- Header -->
+  <a id='header' href='{% url 'blog:index' %}'>:bloogeR is mE</a>
+
+  <!-- Contains navbar and content -->
+    <div class='row'>
+      <!-- Navbar -->
+      <ul class='navbar'>
+        <li><a class='nav-item invert' href='{% url 'blog:index' %}'>
+            Home
+        </a></li>
+        <li><a class='nav-item' href='{% url 'blog:post' 'contact-me' %}'>
+            Contact me!
+        </a></li>
+        <li><a class='nav-item' href='https://github.com/JasonQiu1' target='_blank'>
+            Github
+        </a></li>
+        <li><a class='nav-item' href='https://16bpp.net' target='_blank'>
+            Check out 16BPP.net
+        </a></li>
+      </ul>
+
+      <!-- Extended content -->
+      <div class='main'>
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</body>

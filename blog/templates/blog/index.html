@@ -1,0 +1,29 @@
+{% extends "blog/base.html" %}
+
+{% load blog_extras %}
+
+{% block content %}
+  {% if latest_post_list %}
+  <!-- List of most recent posts -->
+    {% for post in latest_post_list %}
+      <!-- Show each post -->
+      <div class='post'>
+        <!-- Post title -->
+        <a class='border' href='{% url 'blog:post' post %}'>
+          <div class='post-header'>
+            <h1>{{ post.title_text|bloogerify }}</h1>
+            <small>{{ post.pub_date }}</small>
+          </div>
+        </a>
+
+        <!-- Post body -->
+        <div class='post-body'> 
+          {{ post.body|bloogerify|safe }}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <!-- Message if there are no recent posts -->
+    <p>There are no posts yet!</p>
+  {% endif %}
+{% endblock %}
