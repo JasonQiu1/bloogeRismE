@@ -1,0 +1,133 @@
+{% extends 'pictomsg/base.html' %}
+
+{% block content %}
+<div id="peer-container">
+  <div id="peer-id"></div>
+  <p>Status: <span id="status">Awaiting connection...</span></p>
+  <label for="connect">Input the other person's peer ID:</label>
+  <input id="connect" type="text">
+  <button id="connect-button" type="button">Connect!</button>
+</div>
+
+{% include 'pictomsg/canvas.html' %}
+
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+<script type="text/javascript">
+  const toImgData = (view, offset) => {
+    let receivedImg = context.createImageData(width, height)
+    let bitPos = 3
+    for (let i = offset; i < view.byteLength; i++) {
+      for (let j = 0; j < 8; j++) {
+        let bit = (view[i] & (0x1 << j)) && 255
+        receivedImg.data[bitPos] = bit
+        bitPos+=4
+      }
+    }
+    return receivedImg
+  }
+
+  const toBitArray = (data) => {
+    // first two bytes for width and height
+    let arr = new Uint8Array((width*height)+2)
+    arr[0] = width
+    arr[1] = height
+    let arrInd = 2
+    let byteInd = 0
+    for (let i = 3; i < data.length; i+=4) {
+      if (byteInd >= 8) {
+        byteInd = 0
+        arrInd++
+      }
+      arr[arrInd] = arr[arrInd] | ((data[i]>0) << byteInd++)
+    }
+    return arr
+  }
+
+(() => {
+  <!-- Handle P2P connection -->
+  var status = document.getElementById("status")
+  var peer = null
+  var conn = null
+
+  const initPeer = () => {
+    peer = new Peer(null, {
+      //host: 'bloogeris.me',
+      //port: 9000,
+      //path: '/pictomsg',
+      debug: 2
+    })
+
+    peer.on('open', (id) => {
+      document.getElementById("peer-id").innerHTML = "My peer id is: " + id
+    })
+
+    peer.on('connection', (c) => {
+      if (conn && conn.open) {
+        c.on('open', () => {
+          setTimeout(() => { c.close(); }, 500)
+        })
+        status.innerHTML = "Peer already connected to another peer."
+        return
+      }
+      conn = c
+      ready(conn)
+      status.innerHTML = "Connected to another peer."
+    })
+
+    peer.on('disconnected', () => {
+      status.innerHTML = "Disconnected. Try to reconnect!"
+    })
+
+    peer.on('close', () => {
+      conn = null
+      status.innerHTML = "Lost connection. Please refresh."
+    })
+
+    peer.on('error', (err) => {
+      console.log(err)
+      alert('' + err)
+    })
+  }
+
+  const connect = () => {
+    if (conn) {
+      conn.close()
+    }
+
+    conn = peer.connect(document.getElementById("connect").value, {
+      reliable: true
+    })
+
+    if (conn) {
+      status.innerHTML = "Connected to: " + conn.peer
+      ready(conn)
+    }
+  }
+
+  const ready = (conn) => {
+    conn.on('open', () => {
+      status.innerHTML = "Connected to: " + conn.peer
+    })
+
+    conn.on('data', (data) => {
+      console.log("Data received!")
+      let view = new Uint8Array(data)
+      console.log("Width: " + view[0])
+      console.log("Height: " + view[1])
+      console.log(view)
+
+      rcvContext.putImageData(toImgData(view, 2), 0, 0)
+    })
+  }
+
+  const sendCanvas = () => {
+    conn.send(toBitArray(context.getImageData(0, 0, width, height).data))
+  }
+
+  document.getElementById("send-canvas").addEventListener('click', sendCanvas)
+  document.getElementById("connect-button").addEventListener('click', connect); 
+
+  initPeer()
+})()
+</script>
+{% endblock %}

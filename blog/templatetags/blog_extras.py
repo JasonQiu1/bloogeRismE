@@ -8,6 +8,7 @@ register = template.Library()
 @register.filter
 @stringfilter
 def bloogerify(value):
+    return value;
     return re.sub(r'^My|\b[mM]y\b', 'Blooger\'s',
             re.sub(r'\bI\b', 'me', 
                 re.sub(r'^I\b|(\. |>)I\b', r'\1Me', 

@@ -24,6 +24,7 @@ from .views import redirect_view
 
 urlpatterns = [
     path('blog/', include('blog.urls'), name='blog'),
+    path('pictomsg/', include('pictomsg.urls'), name='pictomsg'),
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^favicon\.ico$',RedirectView.as_view(url='/static/images/favicon.ico')),
